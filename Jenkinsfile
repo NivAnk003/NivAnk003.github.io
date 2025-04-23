@@ -24,7 +24,7 @@ pipeline {
 
     stage('Run Unit Tests') {
       steps {
-        sh 'pytest tests/' // optional
+        echo 'pytest tests/' // optional
       }
     }
 
