@@ -11,7 +11,8 @@ pipeline {
 
     stage('Checkout Code') {
       steps {
-        git 'https://github.com/NivAnk003/NivAnk003.github.io.git'
+        git branch: 'main',
+            url: 'https://github.com/NivAnk003/NivAnk003.github.io.git'
       }
     }
 
