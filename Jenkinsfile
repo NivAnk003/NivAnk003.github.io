@@ -27,7 +27,7 @@ pipeline {
 
     stage('Run Unit Tests') {
       steps {
-        echo 'pytest tests/' // tests to be added.
+        echo 'pytest tests/' // tests to be added for code testing.
       }
     }
 
