@@ -2,10 +2,13 @@ pipeline {
   agent any
 
   environment {
-    AWS_REGION = 'ap-south-1' 
-    ECR_REPO = '235494802089.dkr.ecr.ap-south-1.amazonaws.com/lambda-image'
-    IMAGE_TAG = "lambda-image:${BUILD_NUMBER}"
-  }
+  AWS_REGION = 'ap-south-1' 
+  ACCOUNT_ID = '235494802089'
+  REPO_NAME = 'lambda-image'
+  ECR_REPO = "${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPO_NAME}"
+  IMAGE_TAG = "lambda-image:${BUILD_NUMBER}"
+}
+
 
   stages {
 
@@ -34,9 +37,9 @@ pipeline {
                     sh '''
                         aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
                         aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-                        aws configure set default.region ap-south-1
+                        aws configure set default.region $AWS_REGION
 
-                        aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_NAME
+                        aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
                     '''
                 }
             }
@@ -51,8 +54,8 @@ pipeline {
     stage('Tag & Push to ECR') {
       steps {
         sh """
-        docker tag $IMAGE_TAG $ECR_REPO
-        docker push $ECR_REPO
+        docker tag $IMAGE_TAG $ECR_REPO:$BUILD_NUMBER
+        docker push $ECR_REPO:$BUILD_NUMBER
         """
       }
     }
