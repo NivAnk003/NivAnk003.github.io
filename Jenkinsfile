@@ -66,7 +66,7 @@ pipeline {
       echo "Docker image pushed to ECR: $ECR_REPO"
     }
     failure {
-      echo "Build failed. Check logs."
+      echo "Build failed.But why? Check logs."
     }
   }
 }
